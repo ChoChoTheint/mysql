@@ -1,0 +1,29 @@
+SEVER LOGIN
+
+username = ssh kotha@dltmyanmar.com
+password = datalandtechnology
+ssh wdf3124@dltmyanmar.com
+
+
+sudo mode = sudo -i
+
+putty host name =dltmyanmar.com or 157.230.240.154 
+login user name = wdf6366 password = datalandtechnology 
+winsp host name =dltmyanmar.com or 157.230.240.154 
+username = dlt password = datalandtechnology 
+
+______________________________________________________
+
+DATABASE LOGIN 
+mysql -uwdf6366 -p (-u ka username)(-p ka password) 
+
+Method 1
+mysql -uWDF3124 -pdatalandtechnology
+
+Method 2 
+mysql -u WDF3124 -p datalandtechnology
+
+
+exit
+
+___________________________________________________

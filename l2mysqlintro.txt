@@ -1,0 +1,66 @@
+Check version
+mysql -V (in sever)
+
+help;(in mysql)
+
+status;
+
+
+=> Arithematic Operators (5 Types)
+
+Operators 			Meaning								Operates On
++ (add)				Addition				
+- (substract)		Subtraction
+* (multiply)		Muliplacation
+/ (divide)			Division
+% (modules)			Returns remainder of a division
+
+
+Addition Opeartor = Syntax
+
+SELECT 10 + 2;
+SELECT '10' + 2;
+SELECT '10' + '2';
+SELECT 100+200 , 20+30;
+SELECT '20'+'30','40'+'10';
+
+
+Subtraction Opeartor = Syntax
+
+SELECT 10 - 2;
+SELECT '10' - 2;
+SELECT '10' - '2';
+SELECT 100-200 , 20-30;
+SELECT '20'-'30','40'-'10';
+
+Multiplication Opeartor = Syntax
+
+SELECT 10 * 2;
+SELECT '10' * 2;
+SELECT '10' * '2';
+SELECT 100*200 , 20*30;
+SELECT 20*'30',40*'10';
+
+
+Division Opeartor And DIV = Syntax
+
+SELECT 20 / 3;		RESULT = 6
+SELECT 30 DIV 3;    RESULR = 6.6667
+SELECT 5 DIV 3, -40 DIV 3, -100 DIV -7;
+SELECT 5 DIV 2,20/5;
+
+
+SELECT 2/3 , 3/4;
+SELECT 1000/2 , '1000'/25 , 10/2;
+
+
+Moudulus Operator = Syntax
+
+SELECT 10 % 3;
+SELECT 2%3 , 3%5;
+SELECT 20 % '3', '100' % 5;
+
+SELECT 10%3;
+SELECT 10 MOD 3;
+SELECT 70 MOD 5, MOD(10,3)   RESULT = 0,1
+

@@ -1,0 +1,65 @@
+=>INSERT DATA TO TABLE
+i.Insert Single Data
+ii.Insert Multi Data
+
+
+i.Insert Single Data = Syntax
+Method 1
+INSERT INTO tablename (col1,col2,col3,.....) VALUES (val1,val2,val3,...);
+
+
+Method 2
+INSERT INTO tablename VALUES (val1,val2,val3,.....);
+
+
+ii.Insert Multi Data = Syntax
+Method 1
+INSERT INTO tablename (col1,col2,col3,....)
+VALUES (val1,val2,val3,.............),
+		(val1,val2,val3,.............),
+		(val1,val2,val3,.............),
+		......;
+
+
+Method 2
+INSERT INTO tablename
+VALUES (val1,val2,val3,.............),
+		(val1,val2,val3,.............),
+		(val1,val2,val3,.............),
+		......;
+
+
+
+__________________________________________________
+=>i.Insert Single Data 
+EXERCISE
+
+Method 1
+INSERT INTO persons (personid,firstname,lastname,city,address)
+VALUES (1,'tin htut','aung','mandalay','no.9,myittar st');
+
+INSERT INTO persons(personid,firstname,lastname,city,address)
+VALUES (2,'aung','hla','yangon','n0.9,thida st');
+
+INSERT INTO persons(firstname,lastname,city,address,personid)
+VALUES ('su su','hlaing','yangon','no.1,tamwe st',3);
+
+
+Method 2 
+INSERT INTO persons VALUES (4,'hnin si','khin','mandalay','no.12,st 60');
+
+
+__________________________________________________
+ii.Insert Multi Data
+EXERCISE
+
+INSERT INTO persons (personid,firstname,lastname,city,address)
+VALUES (5,'nu','nu','mandalay','no.19,myittar st'),
+		(6,'mya','mya','mandalay','no.19,myittar st'),
+		(7,'lu lu','aung','mandalay','no.19,myittar st'),
+
+
+INSERT INTO persons 
+VALUES ('yu','yu','mandalay',8,'no.19,myittar st'),
+		('kyaw','kyaw',9,'mandalay','no.19,myittar st'),
+		('mya','mya',10,'mandalay','no.19,myittar st'),

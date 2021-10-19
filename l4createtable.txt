@@ -1,0 +1,65 @@
+=>CREATE TABLE
+
+*SEVER LOGIN
+*DATABSE SEVER LOGIN
+*CHOOSE DATABASE ( DATABASE CHECK )
+
+
+=>CHECK TABLE
+SHOW TABLES;
+
+=>CREATE TABLE = Syntax
+
+CREATE TABLE table_names(
+	col1 datatype,
+	col2 datatype,
+	col3 datatype,
+	........
+);
+
+CREATE TABLE persons(
+	personid int,
+	firstname varchar(225),
+	lastname varchar(225),
+	city varchar(225),
+	address varchar(225)
+);
+
+SHOW TABLES;
+
+
+
+
+=>Table Info (Describe)
+Method 1
+DESC persons;
+Method 2
+SHOW COLUMNS FROM persons;
+
+__________________________________________________
+
+CRATE TABLE countries(
+	countryid int,
+	countryname varchar(255),
+	capitalname varchar(255),
+	currency varchar(225)
+);
+
+
+
+=>DELECT TABLE = Syntax
+DROP TABLE tablename;
+
+
+=>No Option
+
+CRATE TABLE countries(
+	countryid int NOT NULL,
+	countryname varchar(255) NOT NULL,
+	capitalname varchar(255),
+	currency varchar(225)
+);
+
+DESC countries;
+
+__________________________________________________
