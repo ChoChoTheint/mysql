@@ -1,0 +1,72 @@
+#30 Jan 2022
+
+=>LEFT JOIN
+
+=Syntax
+SELECT columns
+FROM table1 name
+LEFT JOIN table2 name
+ON table1.column = table2.column;
+_____________________________________________________________________________________
+
+=>INNER JOIN
+
+SELECT * FROM customer
+INNER JOIN orders
+ON customer.id = orders.customer_id;
+
+
+=>LEFT JOIN
+
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+
+
+=>INNER JOIN
+
+SELECT * FROM orders
+INNER JOIN customer
+ON orders.customer_id = customer.id;
+
+
+=>LEFT JOIN
+
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+
+SELECT firstname,lastname,orderdate,amount
+FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id;
+
+SELECT firstname,lastname,orderdate,SUM(amount)
+FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id;
+
+SELECT firstname,lastname,orderdate,SUM(amount),COUNT(*)
+FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id;
+
+SELECT firstname,lastname,orderdate,SUM(amount) AS 'total_amount',COUNT(*) AS 'total_order'
+FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id
+ORDER BY total_amount;
+
+SELECT firstname,lastname,orderdate,SUM(amount) AS 'total_amount',COUNT(*) AS 'total_order'
+FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id
+ORDER BY total_amount DESC;
+_____________________________________________________________________________
+

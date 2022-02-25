@@ -1,0 +1,293 @@
+=>UNIQUE Constraint
+
+UNIQUE >>> only one   (ph no.  id   email)
+
+Constraint >>> restrict  (PRIMARY KEY   FOREIGN KEY  Not Null   Default  Check   Unique)
+
+
+
+
+=>Syntax
+
+Method 1 (single column)
+
+CREATE TABLE IF NOT EXISTS tablename(
+	column1 datatype,
+	column2 datatype UNIQUE,
+	column3 datatype,
+	......
+);
+
+
+Method 2 (single column)
+
+CREATE TABLE IF NOT EXISTS tablename(
+	column1 datatype,
+	column2 datatype,
+	column3 datatype,
+	......
+	UNIQUE(column2)
+);
+
+____________________________________________________________
+
+
+Method 1 (multi column)
+
+CREATE TABLE IF NOT EXISTS tablename(
+	column1 datatype UNIQUE,
+	column2 datatype UNIQUE,
+	column3 datatype UNIQUE,
+	......
+);
+
+______________________________________________________________________
+
+=> Method 1 (Single column)
+
+CREATE TABLE IF NOT EXISTS ourcountries(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	capital VARCHAR(50) NOT NULL,
+	currencyname VARCHAR(30),
+	isocode VARCHAR(10)
+);
+
+
+=> Method 2 (Single column)
+
+CREATE TABLE IF NOT EXISTS ourcountries(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	capital VARCHAR(50) NOT NULL,
+	currencyname VARCHAR(30),
+	isocode VARCHAR(10),
+	UNIQUE(name) 			>>>  UNIQUE KEY(name)   >>> Both are OK
+);
+
+DESC ourcountries;
+
+SHOW INDEX FROM ourcountries;  >>> check UNIQUE
+
+=>DROP Unique Key
+ALTER TABLE ourcountries DROP INDEX name;
+
+INSERT INTO ourcountries(name,capital,currencyname,isocode)
+VALUES ('myanmar','naypyidaw','myanmar kyat','mmk'),
+('thailand','bangkok','thai baht','thb'),
+('indonesia','jakata','indonesia rupiah','idr'),
+('srilanka','colombo','srilanka rupee','ikr');
+
+SELECT * FROM ourcountries;
+
+
+*error (Bcoz of UNIQUE key in name)  >>> myanamr was exist 
+INSERT INTO ourcountries(name,capital,currencyname,isocode)
+VALUES ('myanmar','yangon','burmese kyat','mmk');
+
+*error (Bcoz of UNIQUE key in name) >>>> thailand was exist in table
+UPDATE ourcountries SET name="thailand" WHERE id = 4;
+
+*can (Bcoz of UPDATE name isn't the same in table)
+UPDATE ourcountries SET name="sri lanka" WHERE id = 4;
+
+*can (Bcoz of UPDATE capital isn't UNIQUE key in table)
+UPDATE ourcountries SET capital="yangon" WHERE id = 1;
+
+SELECT * FROM ourcountries;
+
+DROP TABLE IF EXISTS ourcountries;
+___________________________________________________________________________
+
+=>Method 1 (multi column)
+
+CREATE TABLE IF NOT EXISTS cashiers(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
+	password VARCHAR(100) NOT NULL,
+	phone VARCHAR(15) UNIQUE
+);
+
+DESC cashiers;
+
+SHOW INDEX FROM cashiers;
+
+
+=>DROP Unique Key
+ALTER TABLE cashiers DROP INDEX phone;
+
+ALTER TABLE cashiers DROP INDEX email;
+
+DROP TABLE IF EXISTS cashiers;
+__________________________________________________________________________
+
+
+CREATE TABLE IF NOT EXISTS cashiers(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
+	password VARCHAR(100) NOT NULL,
+	phone VARCHAR(15) UNIQUE
+);
+
+DESC cashiers;
+
+SHOW INDEX FROM cashiers;
+
+
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('susu','susu@gmail.com',MD5(SHA1(123456)),'0911111'),
+('yuyu','yuyu@gmail.com',MD5(SHA1(123456)),'0922222'),
+('hlahla','hlahla@gmail.com',MD5(SHA1(123456)),'0933333');
+
+SELECT * FROM cashiers;
+
+
+*error (Bcoz of email and phone are UNIQUE KEY exists in table)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','susu@gmail.com',MD5(SHA1(123456)),'0944444');
+
+
+*error (Bcoz of phone was exist in UNIQUE KEY)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','mama@gmail.com',MD5(SHA1(123456)),'0933333');
+
+*error (Bcoz of email and phone was exist in UNIQUE KEY)       >>> table id will be continue calculate
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','yuyu@gmail.com',MD5(SHA1(123456)),'0933333');
+
+
+*can (Bcoz of phone was not give NOT NULL)
+INSERT INTO cashiers(name,email,password)
+VALUES ('ayeaye','ayaye@gmail.com',MD5(SHA1(123456)));
+
+*can (Bcoz of phone was not give NOT NULL)
+INSERT INTO cashiers(name,email,password)
+VALUES ('chitsu','chitsu@gmail.com',MD5(SHA1(123456)));
+
+SELECT * FROM cashiers;
+
+
+ALTER TABLE cashiers DROP INDEX phone;
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+
+
+*can (Bcoz of phone UNIQUE was DROP )  >>>  can be added with same no.
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','mama@gmail.com',MD5(SHA1(123456)),'0933333');
+
+SELECT * FROM cashiers;
+
+DROP TABLE IF EXISTS cashiers;
+_________________________________________________________________________
+
+=>CONSTRAINT
+
+CREATE TABLE IF NOT EXISTS cashiers(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	phone VARCHAR(15),
+	CONSTRAINT uc_email_phone UNIQUE(email,phone)
+);
+
+DESC cashiers;
+
+SHOW INDEX FROM cashiers;
+
+
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('susu','susu@gmail.com',MD5(SHA1(123456)),'0911111'),
+('yuyu','yuyu@gmail.com',MD5(SHA1(123456)),'0922222'),
+('hlahla','hlahla@gmail.com',MD5(SHA1(123456)),'0933333');
+
+SELECT * FROM cashiers;
+
+
+*can ([email] only one same >>> no error)    >>>   Bcoz of Constraint
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','susu@gmail.com',MD5(SHA1(123456)),'0944444');
+
+
+*can ([phone] only one same >>> no error)    >>>   Bcoz of Constraint
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','mama@gmail.com',MD5(SHA1(123456)),'0933333');
+
+
+*Error  (email and phone both were same)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','yuyu@gmail.com',MD5(SHA1(123456)),'0933333');
+
+
+SELECT * FROM cashiers;
+
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+
+*error
+ALTER TABLE cashiers DROP INDEX email;
+
+*can be
+ALTER TABLE cashiers DROP INDEX uc_email_phone;
+
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+
+DROP TABLE IF EXISTS cashiers;
+_________________________________________________________________________
+
+
+=>UNIQUE VS CONSTRAINT
+
+CREATE TABLE IF NOT EXISTS cashiers(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	phone VARCHAR(15),
+	CONSTRAINT uc_email_phone UNIQUE(email,phone)
+);
+
+DESC cashiers;
+
+SHOW INDEX FROM cashiers;
+
+
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('susu','susu@gmail.com',MD5(SHA1(123456)),'0911111'),
+('yuyu','yuyu@gmail.com',MD5(SHA1(123456)),'0922222'),
+('hlahla','hlahla@gmail.com',MD5(SHA1(123456)),'0933333');
+
+SELECT * FROM cashiers;
+
+*can (only one same no error)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','susu@gmail.com',MD5(SHA1(123456)),'0944444');
+
+
+*can
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','mama@gmail.com',MD5(SHA1(123456)),'0933333');
+
+*error  (Bcoz of all are the same with upper datas)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('mama','mama@gmail.com',MD5(SHA1(123456)),'0933333');
+
+
+*can
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('nandar','yuyu@gmail.com',MD5(SHA1(123456)),'0933333');
+
+*Error  (email and phone both were same with upper datas)
+INSERT INTO cashiers(name,email,password,phone)
+VALUES ('marlar','yuyu@gmail.com',MD5(SHA1(123456)),'0933333');
+
+
+SELECT * FROM cashiers;
+
+DESC cashiers;
+SHOW INDEX FROM cashiers;
+__________________________________________________________________________________________

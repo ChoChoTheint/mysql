@@ -1,0 +1,112 @@
+=>Join
+***(cross join  [isn't really join, only parallel view])
+
+1. Inner Join (or sometimes we can call Simple Join)
+2. Left Outer Join (or we can call Left Join)
+3. Right Outer Join (or we can call Right Join)
+4. Full Outer Join (or we can call Full Join)
+__________________________________________________________________________-
+
+SHOW TABLES;
+
+CREATE TABLE IF NOT EXISTS customer(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	email VARCHAR(50)
+);
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT
+);
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('aung','aung','aungaung@gmail.com'),
+('maung','maung','maungmaung@gmail.com'),
+('kyaw','kyaw','kyawkyaw@gmail.com'),
+('zaw','zaw','zawzaw@gmail.com'),
+('su','su','susu@gmail.com'),
+('aye','aye','ayeaye@gmail.com'),
+('yu','yu','yuyu@gmail.com');
+
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/10/10',70.25,20);
+
+
+SELECT * FROM customer WHERE lastname = "aung";
+
+SELECT * FROM orders WHERE customer_id = 1;
+
+SELECT * FROM orders WHERE customer_id = (
+	SELECT id FROM customer 
+	WHERE lastname = "aung"
+);
+
+
+
+
+SELECT id FROM customer WHERE lastname = "maung";
+
+SELECT * FROM orders WHERE customer_id = 2;
+
+SELECT * FROM orders WHERE customer_id = (
+	SELECT id FROM customer 
+	WHERE lastname = "maung"
+);
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('htoo','aung','htooaung@gmail.com');
+
+***error (Bcoz of id isn't UNIT   more than datas in table)
+*error = Subquery returns more than 1 row
+SELECT * FROM orders WHERE customer_id = (
+	SELECT id FROM customer 
+	WHERE lastname = "aung"
+);
+
+*empty set 
+SELECT * FROM orders WHERE customer_id = 8;
+
+SELECT * FROM orders WHERE customer_id = (
+	SELECT id FROM customer
+	WHERE email = "htooaung@gmail.com"
+);
+
+
+
+SELECT * FROM customer;
+
+SELECT * FROM orders;
+
+(Parllel View of Tables)
+SELECT * FROM customer,orders;
+SELECT * FROM orders,customer;
+____________________________________________________________________________
+
+22JJ
+____________________________________________________________________________
+#23 Jan 2022
+
+=>Cross Join
+
+SELECT * FROM customer;
+SELECT * FROM orders;
+
+*Result = Mixing result show below;
+SELECT * FROM customer,orders;
+SELECT * FROM orders,customer;
+____________________________________________________________________________

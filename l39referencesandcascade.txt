@@ -1,0 +1,402 @@
+=> References and Cascade
+
+=>References
+
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS orders;
+
+
+
+CREATE TABLE IF NOT EXISTS customer(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	email VARCHAR(50)
+);
+
+DESC customer;
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id)
+);
+
+DESC orders;
+
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('aung','aung','aungaung@gmail.com'),
+('maung','maung','maungmaung@gmail.com'),
+('kyaw','kyaw','kyawkyaw@gmail.com'),
+('zaw','zaw','zawzaw@gmail.com'),
+('su','su','susu@gmail.com'),
+('aye','aye','ayeaye@gmail.com'),
+('yu','yu','yuyu@gmail.com');
+
+SELECT * FROM customer;
+
+
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+
+
+#Feb 5 2022
+
+*error = cuz of customer id
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES ('2021/10/10',70.25,20);
+
+*error = cuz of customer id
+DELETE FROM customer WHERE id = 3;
+
+can delete 
+DELETE FROM customer WHERE id = 7;
+
+
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+
+DROP TABLE IF EXISTS orders;
+________________________________________________________________________________
+
+=> Cascade (DELETE)
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE CASCADE
+);
+
+DESC orders;
+
+INSERT INTO customer(id,firstname,lastname,email)
+VALUES(3,'kyaw','kyaw','kyawkyaw@gmail.com');
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+
+*error = cuz of customer id
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES ('2021/10/10',70.25,20);
+
+can delete = cuz of DELETE Cascade
+DELETE FROM customer WHERE id = 3;
+
+SELECT * FROM customer;
+
+SELECT * FROM orders;
+
+can delete = cuz of not connected with Reference table
+DELETE FROM customer WHERE id = 6;
+
+
+*error = can't truncate or drop cuz of FK in orders table
+TRUNCATE TABLE customer;
+DROP TABLE IF EXISTS customer;
+
+SELECT * FROM customer;
+_____________________________________________________________________________________________________
+
+=>Cascade (Update)
+
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customer;
+
+CREATE TABLE IF NOT EXISTS customer(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	email VARCHAR(50)
+);
+
+DESC customer;
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id)
+);
+
+DESC orders;
+
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('aung','aung','aungaung@gmail.com'),
+('maung','maung','maungmaung@gmail.com'),
+('kyaw','kyaw','kyawkyaw@gmail.com'),
+('zaw','zaw','zawzaw@gmail.com'),
+('su','su','susu@gmail.com'),
+('aye','aye','ayeaye@gmail.com'),
+('yu','yu','yuyu@gmail.com');
+
+SELECT * FROM customer;
+
+
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+
+
+
+*error = cuz of customer id
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES ('2021/10/10',70.25,20);
+
+*can't delete = cuz of datas in orders table transition connected
+DELETE FROM customer WHERE id = 3;
+
+can delete = cuz of datas aren't in orders table 
+DELETE FROM customer WHERE id = 7;
+
+can't update (bcoz of contain transation connected with orders table)
+UPDATE customers SET id = 3;
+
+can UPDATE for other fields 
+UPDATE customers SET firstname = 'nu nu' WHERE id = 3;
+
+SELECT * FROM customers;
+
+can update (no transcation)
+UPDATE customers SET id = 7 WHERE id = 6;
+
+DROP TABLE IF EXISTS orders;
+___________________
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id) ON UPDATE CASCADE
+);
+
+DESC orders;
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+SELECT * FORM customer;   >>>  4,5,8 free
+
+
+*error = cuz of customer id
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES ('2021/10/10',70.25,20);
+
+*can't delete = cuz of connected with transition
+DELETE FROM customer WHERE id = 3;
+
+can delete = no transition in orders table
+DELETE FROM customer WHERE id = 8;
+
+can update = cuz of UPDATE Cascade
+UPDATE customers SET id = 7 WHERE id = 3;
+
+SELECT * FROM orders;
+SELECT * FORM customer; 
+
+can UPDATE for other fields
+UPDATE customer SET firstname = 'kyaw' WHERE id = 7;
+
+SELECT * FROM customers;
+
+can update
+UPDATE customers SET id = 6 WHERE id = 5;
+
+SELECT * FROM customers;
+
+*error = can't truncate or drop cuz of FK in orders table
+TRUNCATE TABLE customer;
+DROP TABLE IF EXISTS customer;
+____________________________________________________________________________________________
+
+=>CASCADE (UPDATE DELETE)
+
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customer;
+
+CREATE TABLE IF NOT EXISTS customer(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	email VARCHAR(50)
+);
+
+DESC customer;
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DESC orders;
+
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('aung','aung','aungaung@gmail.com'),
+('maung','maung','maungmaung@gmail.com'),
+('kyaw','kyaw','kyawkyaw@gmail.com'),
+('zaw','zaw','zawzaw@gmail.com'),
+('su','su','susu@gmail.com'),
+('aye','aye','ayeaye@gmail.com'),
+('yu','yu','yuyu@gmail.com');
+
+SELECT * FROM customer;
+
+
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+
+
+
+can delete (bcoz of NO transcation)
+DELETE FROM customer WHERE id = 7;
+
+SELECT * FROM customer;
+SELECT * FROM orders;
+can delete (bcoz of ON DELETE CASCADE ON UPDATE CASCADE)
+DELETE FROM customer WHERE id = 3;
+
+SELECT * FROM customer;
+SELECT * FROM orders;
+can update (bcoz of ON UPDATE CASCADE ON DELETE CASCADE)
+UPDATE customer SET id = 7 WHERE id = 1;
+
+SELECT * FROM customer;
+SELECT * FROM orders;
+can update (bcoz of ON UPDATE CASCADE)
+UPDATE customer SET id = 3 WHERE id = 7;
+
+
+*error = can't truncate or drop cuz of FK in orders table
+TRUNCATE TABLE customer;
+DROP TABLE IF EXISTS customer;
+
+*if u want to delete table (early to DROP orders table Bcoz CASCADE in orders TABLE)
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customer;
+___________________________________________________________________________________________
+
+=>ON DELETE SET NULL (SET NULL is just for ON DELETE)
+
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customer;
+
+
+
+CREATE TABLE IF NOT EXISTS customer(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	firstname VARCHAR(20),
+	lastname VARCHAR(20),
+	email VARCHAR(50)
+);
+
+DESC customer;
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	orderdate DATE,
+	amount DECIMAL(10,2),
+	customer_id INT,
+	FOREIGN KEY(customer_id) REFERENCES customer(id) ON DELETE SET NULL
+);
+
+DESC orders;
+
+
+
+INSERT INTO customer(firstname,lastname,email)
+VALUES('aung','aung','aungaung@gmail.com'),
+('maung','maung','maungmaung@gmail.com'),
+('kyaw','kyaw','kyawkyaw@gmail.com'),
+('zaw','zaw','zawzaw@gmail.com'),
+('su','su','susu@gmail.com'),
+('aye','aye','ayeaye@gmail.com'),
+('yu','yu','yuyu@gmail.com');
+
+SELECT * FROM customer;
+
+
+
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES('2021/02/10',99.99,1),
+('2021/10/11',75.35,1),
+('2021/06/12',100.26,3),
+('2021/07/13',13.25,2),
+('2021/01/14',45,3);
+
+SELECT * FROM orders;
+
+*error = cuz of customer id
+INSERT INTO orders(orderdate,amount,customer_id)
+VALUES ('2021/10/10',70.25,20);
+
+can delete = cuz of ON DELETE SET NULL
+DELETE FROM customer WHERE id = 3;
+
+SELECT * FROM customer;
+
+SELECT * FROM orders;
+
+can delete = no transaction
+DELETE FROM customer WHERE id = 6;
+
+can delete = cuz of ON DELETE SET NULL
+DELETE FROM customer WHERE id = 1;
+
+*error = can't truncate or drop cuz of FK in orders table
+TRUNCATE TABLE customer;
+DROP TABLE IF EXISTS customer;
+_________________________________________________________________________________________________

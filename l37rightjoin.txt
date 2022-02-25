@@ -1,0 +1,97 @@
+=>RIGHT JOIN
+
+=Syntax
+
+SELECT columns
+FROM table1
+RIGHT JOIN table2
+ON table1.column = table2.column;
+_________________________________________________________________
+
+=>LEFT JOIN
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+=>RIGHT JOIN
+SELECT * FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+
+
+
+
+=>LEFT JOIN
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+
+=>RIGHT JOIN
+SELECT * FROM orders
+RIGHT JOIN customer
+ON orders.customer_id = customer.id;
+
+SELECT firstname,lastname,orderdate,amount
+FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+SELECT firstname,lastname,orderdate,amount
+FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id;
+________________________________________________________________________________________
+
+#Feb 2 2022
+
+SELECT firstname,lastname,orderdate,SUM(amount),COUNT(*)
+FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id;
+
+SELECT firstname,lastname,orderdate,SUM(amount) AS 'total_amount',COUNT(*)
+FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id
+GROUP BY customer.id
+ORDER BY total_amount DESC;
+_____________________________________________________________________________
+
+=REMARK
+
+=>LEFT JOIN
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+=>LEFT OUTER JOIN
+SELECT * FROM customer
+LEFT OUTER JOIN orders
+ON customer.id = orders.customer_id;
+
+
+=>RIGHT JOIN
+SELECT * FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+=>RIGHT OUTER JOIN
+SELECT * FROM customer
+RIGHT OUTER JOIN orders
+ON customer.id = orders.customer_id;
+
+
+
+
+
+=>LEFT JOIN
+SELECT customer.firstname,customer.lastname,orderdate,amount FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+SELECT customer.firstname,customer.lastname,orders.orderdate,orders.amount FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;

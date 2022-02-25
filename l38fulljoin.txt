@@ -1,0 +1,123 @@
+=>FULL JOIN (UNION JOIN)
+
+=Syntax:
+
+SELECT columns
+FROM table1
+LEFT JOIN table2
+ON table1.column = table2.column
+UNION
+SELECT columns
+FROM table1
+RIGHT JOIN table2
+ON table1.column = table2.column;
+
+SELECT columns
+FROM table1
+LEFT JOIN table2
+ON (table1.column = table2.column)
+UNION
+SELECT columns
+FROM table1
+RIGHT JOIN table2
+ON (table1.column = table2.column);
+
+___________________________________________________________________________________________
+
+=>LEFT JOIN
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id;
+
+=>RIGHT JOIN
+SELECT * FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+=>error
+SELECT * FROM customer
+FULL JOIN orders
+ON customer.id = orders.customer_id;
+
+
+
+
+=>UNION
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+UNION
+SELECT * FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+
+SELECT * FROM customer
+LEFT JOIN orders
+ON (customer.id = orders.customer_id)
+UNION
+SELECT * FROM customer
+RIGHT JOIN orders
+ON (customer.id = orders.customer_id);
+
+
+
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id
+UNION
+SELECT * FROM orders
+RIGHT JOIN customer
+ON customer.id = orders.customer_id;
+
+
+SELECT * FROM orders
+RIGHT JOIN customer
+ON customer.id = orders.customer_id
+UNION
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+
+
+
+
+SELECT firstname,lastname,orderdate,amount FROM orders
+RIGHT JOIN customer
+ON customer.id = orders.customer_id
+UNION
+SELECT firstname,lastname,orderdate,amount FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+
+SELECT customer.firstname,customer.lastname,orders.orderdate,orders.amount FROM orders
+RIGHT JOIN customer
+ON customer.id = orders.customer_id
+UNION
+SELECT firstname,lastname,orderdate,amount FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id;
+--------------------------------------------------------------
+
+=>UNION ALL
+
+SELECT * FROM customer
+LEFT JOIN orders
+ON customer.id = orders.customer_id
+UNION ALL
+SELECT * FROM customer
+RIGHT JOIN orders
+ON customer.id = orders.customer_id;
+
+SELECT * FROM orders
+LEFT JOIN customer
+ON customer.id = orders.customer_id
+UNION ALL
+SELECT * FROM orders
+RIGHT JOIN customer
+ON customer.id = orders.customer_id;
+
+
+
+
+SAT p.s for Mysql >>> sata2022
